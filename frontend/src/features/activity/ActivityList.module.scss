@@ -1,0 +1,131 @@
+.toolbar {
+  display: flex;
+  justify-content: flex-end;
+  margin-bottom: var(--spacing-md);
+}
+
+.list {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(250px, 1fr));
+  gap: var(--spacing-md);
+}
+
+.unarchiveBtn {
+  color: var(--color-foreground);
+  opacity: 0.5;
+
+  &:hover {
+    opacity: 1;
+    color: var(--color-accent);
+  }
+}
+
+.card {
+  background: var(--color-background);
+  border: 8px solid var(--color-border);
+  border-radius: var(--radius-md);
+  padding: var(--spacing-md);
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  transition: all 0.2s ease;
+
+  &.active {
+    transform: scale(1.02);
+  }
+}
+
+.header {
+  display: flex;
+  align-items: center;
+  gap: var(--spacing-sm);
+}
+
+.emoji {
+  font-size: 1.5rem;
+}
+
+.name {
+  font-weight: 500;
+}
+
+.details {
+  display: flex;
+  align-items: center;
+  gap: var(--spacing-sm);
+}
+
+.resolution {
+  font-size: 0.8rem;
+  color: var(--color-foreground);
+  opacity: 0.7;
+  text-transform: capitalize;
+}
+
+.archiveBtn {
+  display: flex;
+  color: var(--color-foreground);
+  opacity: 0.5;
+  padding: 4px;
+
+  &:hover {
+    opacity: 1;
+    color: var(--color-error);
+  }
+}
+
+.logBtn {
+  display: flex;
+  color: var(--color-primary);
+  opacity: 1;
+  padding: 4px;
+  border-radius: 4px;
+
+  &:hover {
+    background-color: var(--color-background-soft);
+    color: var(--color-primary);
+  }
+}
+
+.editBtn {
+  display: flex;
+  color: var(--color-foreground);
+  opacity: 0.5;
+  padding: 4px;
+
+  &:hover {
+    opacity: 1;
+    color: var(--color-accent);
+  }
+}
+
+.playBtn {
+  display: flex;
+  color: var(--color-success);
+  opacity: 1;
+  padding: 4px;
+  border-radius: 4px;
+
+  &:hover {
+    background-color: var(--color-background-soft);
+    color: var(--color-success);
+  }
+
+  &:disabled {
+    opacity: 0.5;
+    cursor: default;
+  }
+}
+
+.stopBtn {
+  display: flex;
+  color: var(--color-error);
+  opacity: 1;
+  padding: 4px;
+  border-radius: 4px;
+
+  &:hover {
+    background-color: var(--color-background-soft);
+    color: var(--color-error);
+  }
+}

@@ -1,0 +1,102 @@
+name: grindex-deploy
+
+services:
+  tailscale-api:
+    image: tailscale/tailscale:stable
+    hostname: grindex-api
+    environment:
+      TS_AUTHKEY: ${TS_X_CLIENT_KEY}
+      TS_EXTRA_ARGS: --advertise-tags=${TS_X_DEVICE_TAG}
+      TS_SERVE_CONFIG: /config/serve-api.json
+      TS_USERSPACE: false
+      TS_STATE_DIR: /var/lib/tailscale
+    volumes:
+      - ${PWD}/.tailscale/config:/config
+      - ts-api-state:/var/lib/tailscale
+    devices:
+      - /dev/net/tun:/dev/net/tun
+    cap_add:
+      - NET_ADMIN
+    restart: unless-stopped
+
+  tailscale-ws:
+    image: tailscale/tailscale:stable
+    hostname: grindex-ws
+    environment:
+      TS_AUTHKEY: ${TS_X_CLIENT_KEY}
+      TS_EXTRA_ARGS: --advertise-tags=${TS_X_DEVICE_TAG}
+      TS_SERVE_CONFIG: /config/serve-ws.json
+      TS_USERSPACE: false
+      TS_STATE_DIR: /var/lib/tailscale
+    volumes:
+      - ${PWD}/.tailscale/config:/config
+      - ts-ws-state:/var/lib/tailscale
+    devices:
+      - /dev/net/tun:/dev/net/tun
+    cap_add:
+      - NET_ADMIN
+    restart: unless-stopped
+
+  backend:
+    image: ghcr.io/astral-sh/uv:python3.13-bookworm-slim
+    volumes:
+      - ./backend/app:/app/app:ro
+      - ./backend/pyproject.toml:/app/pyproject.toml:ro
+      - ./backend/uv.lock:/app/uv.lock:ro
+      - ./backend/alembic:/app/alembic:ro
+      - ./backend/alembic.ini:/app/alembic.ini:ro
+    working_dir: /app
+    command: /bin/sh -c "uv run --no-dev alembic upgrade head && uv run --no-dev -m app.cli --reload"
+    env_file:
+      - .env
+    environment:
+      APP_HOST: 0.0.0.0
+      APP_PORT: 8000
+      POSTGRES_HOST: postgres
+      POSTGRES_PORT: 5432
+      WS_BACKEND_URL: http://ws-backend:8001
+    expose:
+      - 8000
+    restart: unless-stopped
+    depends_on:
+      postgres:
+        condition: service_healthy
+
+  ws-backend:
+    image: node:20-alpine
+    working_dir: /app
+    volumes:
+      - ./ws-backend:/app
+      - /app/node_modules
+      - /app/.next
+    command: sh -c "npm install && npm run dev"
+    env_file:
+      - .env
+    environment:
+      ENVIRONMENT: development
+      APP_PORT: 8001
+    expose:
+      - 8001
+    restart: unless-stopped
+
+  postgres:
+    image: postgres:16-alpine
+    environment:
+      POSTGRES_USER: ${POSTGRES_USER}
+      POSTGRES_PASSWORD: ${POSTGRES_PASSWORD}
+      POSTGRES_DATABASE: ${POSTGRES_DATABASE}
+    volumes:
+      - postgres_data:/var/lib/postgresql/data
+    ports:
+      - 5442:5432
+    restart: unless-stopped
+    healthcheck:
+      test: ["CMD-SHELL", "pg_isready -U ${POSTGRES_USER} -d ${POSTGRES_DATABASE}"]
+      interval: 5s
+      timeout: 5s
+      retries: 5
+
+volumes:
+  postgres_data:
+  ts-api-state:
+  ts-ws-state:

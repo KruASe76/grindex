@@ -1,0 +1,77 @@
+.profile {
+  max-width: 600px;
+  margin: 0 auto;
+}
+
+.section {
+  background: var(--color-background);
+  border: 1px solid var(--color-border);
+  border-radius: var(--radius-md);
+  padding: var(--spacing-lg);
+  margin-top: var(--spacing-lg);
+}
+
+.sectionContent {
+  margin-top: var(--spacing-md);
+
+  p {
+    margin-bottom: var(--spacing-sm);
+  }
+}
+
+.changePasswordBtn {
+  background: var(--color-accent);
+  color: white;
+  padding: var(--spacing-sm) var(--spacing-md);
+  border-radius: var(--radius-sm);
+  border: none;
+  cursor: pointer;
+
+  &:hover {
+    background: var(--color-accent-hover);
+  }
+}
+
+.setting {
+  margin-top: var(--spacing-md);
+  display: flex;
+  flex-direction: column;
+  gap: var(--spacing-xs);
+
+  select {
+    padding: var(--spacing-sm);
+    border: 1px solid var(--color-border);
+    border-radius: var(--radius-sm);
+    background: var(--color-input-background);
+    color: var(--color-foreground);
+    font-size: 1rem;
+
+    &:focus {
+      outline: none;
+      border-color: var(--color-primary);
+    }
+  }
+}
+
+.passwordForm {
+  margin-top: var(--spacing-md);
+  display: flex;
+  flex-direction: column;
+  gap: var(--spacing-md);
+}
+
+.formGroup {
+  display: flex;
+  flex-direction: column;
+  gap: var(--spacing-sm);
+}
+
+.error {
+  color: var(--color-error);
+  font-size: 0.9rem;
+}
+
+.success {
+  color: var(--color-success);
+  font-size: 0.9rem;
+}

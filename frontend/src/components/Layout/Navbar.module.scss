@@ -1,0 +1,59 @@
+.navbar {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: var(--spacing-md) var(--spacing-lg);
+  border-bottom: 1px solid var(--color-border);
+  background-color: var(--color-background);
+}
+
+.logo {
+  font-weight: bold;
+  font-size: 1.2rem;
+}
+
+.links {
+  display: flex;
+  gap: var(--spacing-md);
+  margin-right: auto; /* Push actions to the right */
+  margin-left: var(--spacing-lg);
+}
+
+.link {
+  color: var(--color-foreground);
+  text-decoration: none;
+  font-size: 0.9rem;
+  opacity: 0.7;
+
+  &:hover {
+    opacity: 1;
+  }
+
+  &.active {
+    opacity: 1;
+    font-weight: 500;
+  }
+}
+
+.actions {
+  display: flex;
+  align-items: center;
+  gap: var(--spacing-md);
+}
+
+.iconButton {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: var(--spacing-xs);
+  border-radius: var(--radius-sm);
+  color: var(--color-foreground);
+
+  &:hover {
+    background-color: var(--color-border);
+  }
+}
+
+.username {
+  font-size: 0.9rem;
+}

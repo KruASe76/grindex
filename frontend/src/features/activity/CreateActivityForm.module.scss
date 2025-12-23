@@ -1,0 +1,56 @@
+.form {
+  background: var(--color-background);
+  border: 1px solid var(--color-border);
+  border-radius: var(--radius-md);
+  padding: var(--spacing-md);
+  display: flex;
+  flex-direction: column;
+  gap: var(--spacing-md);
+}
+
+.field {
+  display: flex;
+  flex-direction: column;
+  gap: var(--spacing-xs);
+
+  label {
+    font-size: 0.9rem;
+    font-weight: 500;
+  }
+
+  input, select {
+    padding: var(--spacing-sm);
+    border: 1px solid var(--color-border);
+    border-radius: var(--radius-sm);
+    background: var(--color-input-background);
+    color: var(--color-foreground);
+    font-size: 1rem;
+
+    &:focus {
+      outline: none;
+      border-color: var(--color-primary);
+    }
+  }
+}
+
+.row {
+  display: flex;
+  gap: var(--spacing-md);
+}
+
+.emojiInput {
+  width: 50px;
+  text-align: center;
+}
+
+.submitBtn {
+  background: var(--color-accent);
+  color: white;
+  padding: var(--spacing-sm);
+  border-radius: var(--radius-sm);
+  font-weight: 500;
+
+  &:hover {
+    background: var(--color-accent-hover);
+  }
+}
