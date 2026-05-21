@@ -10,14 +10,16 @@ services:
       TS_SERVE_CONFIG: /config/serve-api.json
       TS_USERSPACE: false
       TS_STATE_DIR: /var/lib/tailscale
+    configs:
+      - source: ts-serve-api
+        target: /config/serve.json
     volumes:
-      - ${PWD}/.tailscale/config:/config
       - ts-api-state:/var/lib/tailscale
     devices:
       - /dev/net/tun:/dev/net/tun
     cap_add:
       - NET_ADMIN
-    restart: unless-stopped
+    restart: always
 
   tailscale-ws:
     image: tailscale/tailscale:stable
@@ -28,14 +30,16 @@ services:
       TS_SERVE_CONFIG: /config/serve-ws.json
       TS_USERSPACE: false
       TS_STATE_DIR: /var/lib/tailscale
+    configs:
+      - source: ts-serve-ws
+        target: /config/serve.json
     volumes:
-      - ${PWD}/.tailscale/config:/config
       - ts-ws-state:/var/lib/tailscale
     devices:
       - /dev/net/tun:/dev/net/tun
     cap_add:
       - NET_ADMIN
-    restart: unless-stopped
+    restart: always
 
   backend:
     image: ghcr.io/astral-sh/uv:python3.13-bookworm-slim
@@ -55,9 +59,7 @@ services:
       POSTGRES_HOST: postgres
       POSTGRES_PORT: 5432
       WS_BACKEND_URL: http://ws-backend:8001
-    expose:
-      - 8000
-    restart: unless-stopped
+    restart: always
     depends_on:
       postgres:
         condition: service_healthy
@@ -75,9 +77,7 @@ services:
     environment:
       ENVIRONMENT: development
       APP_PORT: 8001
-    expose:
-      - 8001
-    restart: unless-stopped
+    restart: always
 
   postgres:
     image: postgres:16-alpine
@@ -87,9 +87,7 @@ services:
       POSTGRES_DATABASE: ${POSTGRES_DATABASE}
     volumes:
       - postgres_data:/var/lib/postgresql/data
-    ports:
-      - 5442:5432
-    restart: unless-stopped
+    restart: always
     healthcheck:
       test: ["CMD-SHELL", "pg_isready -U ${POSTGRES_USER} -d ${POSTGRES_DATABASE}"]
       interval: 5s
@@ -97,6 +95,50 @@ services:
       retries: 5
 
 volumes:
-  postgres_data:
   ts-api-state:
   ts-ws-state:
+  postgres_data:
+
+configs:
+  ts-serve-api:
+    content: |
+      {
+        "TCP": {
+          "443": {
+            "HTTPS": true
+          }
+        },
+        "Web": {
+          "${TS_CERT_DOMAIN}:443": {
+            "Handlers": {
+              "/": {
+                "Proxy": "http://backend:8000"
+              }
+            }
+          }
+        },
+        "AllowFunnel": {
+          "${TS_CERT_DOMAIN}:443": true
+        }
+      }
+  ts-serve-ws:
+    content: |
+      {
+        "TCP": {
+          "443": {
+            "HTTPS": true
+          }
+        },
+        "Web": {
+          "${TS_CERT_DOMAIN}:443": {
+            "Handlers": {
+              "/": {
+                "Proxy": "http://ws-backend:8001"
+              }
+            }
+          }
+        },
+        "AllowFunnel": {
+          "${TS_CERT_DOMAIN}:443": true
+        }
+      }
