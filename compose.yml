@@ -10,7 +10,7 @@ services:
       - ./backend/alembic:/app/alembic:ro
       - ./backend/alembic.ini:/app/alembic.ini:ro
     working_dir: /app
-    command: uv run --no-dev alembic upgrade head && uv run --no-dev -m app.cli --reload
+    command: /bin/sh -c "uv run --no-dev alembic upgrade head && uv run --no-dev -m app.cli --reload"
     env_file:
       - .env
     environment:

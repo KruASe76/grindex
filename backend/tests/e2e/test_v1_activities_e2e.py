@@ -17,7 +17,7 @@ class TestActivitiesE2E:
 
         # Get user ID from token
         # This is a bit of a hack, but for e2e tests it's okay
-        import jwt
+        from jose import jwt
 
         from app.core.config import settings
         from app.core.security import ALGORITHM

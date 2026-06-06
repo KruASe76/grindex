@@ -61,7 +61,13 @@ export const objectivesSlice = createSlice({
                 state.list = action.payload;
             })
             .addCase(addObjective.fulfilled, (state, action) => {
-                state.list.push(action.payload);
+                const index = state.list.findIndex(o => o.id === action.payload.id);
+                if (index === -1) {
+                    state.list.push(action.payload);
+                    return;
+                }
+
+                state.list[index] = action.payload;
             })
             .addCase(updateObjective.fulfilled, (state, action) => {
                 const index = state.list.findIndex(o => o.id === action.payload.id);

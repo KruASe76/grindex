@@ -83,6 +83,19 @@ npm run test:e2e   # or test:e2e:ui for Playwright UI to open
 # do not forget to have a running backend for e2e tests
 ```
 
+## CI and frontend artifacts
+
+GitHub Actions runs all configured linters and tests for pull requests and pushes to `main`.
+
+Configure these repository variables under **Settings → Secrets and variables → Actions → Variables**:
+
+- `VITE_API_URL`: public REST API URL, including `/api/v1`
+- `VITE_WS_URL`: public WebSocket server URL
+
+Each successful `main` build publishes `grindex-frontend-<commit SHA>` in the workflow run's
+**Artifacts** section. The artifact contains the Vite `dist` files for an Nginx document root.
+Configure Nginx with an SPA fallback such as `try_files $uri $uri/ /index.html`.
+
 
 ## Usage
 

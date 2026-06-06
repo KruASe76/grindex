@@ -1,7 +1,7 @@
 import {useEffect} from 'react';
 import {useAppDispatch, useAppSelector} from '../../app/hooks';
 import {connectSocket, disconnectSocket, joinRoom} from '../../services/socket';
-import {updateLiveStatus} from './liveStatusSlice';
+import {fetchLiveStatus, updateLiveStatus} from './liveStatusSlice';
 import {fetchActiveTracker} from './trackerSlice';
 import {fetchLeaderboard, fetchPersonalStats, fetchStats} from '../stats/statisticsSlice';
 
@@ -45,6 +45,7 @@ export const useSocketConnection = () => {
         const onConnect = () => {
             console.log('Socket connected, joining rooms:', rooms.map(r => r.id));
             rooms.forEach(room => joinRoom(room.id));
+            dispatch(fetchLiveStatus());
         };
 
         const onLiveStatusUpdate = (data: LiveStatusUpdate) => {
