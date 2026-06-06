@@ -5,6 +5,23 @@ Grindex is an activity tracking and social productivity platform. It allows user
 [**Website**](https://grindex.vercel.app/) ·
 [**Presentation**](https://grindex-presentation.vercel.app/)
 
+## Usage
+
+1. Register a new account or login to an existing one
+2. In the dashboard, create one or multiple activities
+   - activities have a _resolution_ parameter: it indicates the period of time for which
+     the activity time is summarized in charts (day, week, month)
+3. Add time logs to the activities or start tracking one of them - a chart will appear
+   in the dashboard
+4. Switch to the **Rooms** page to create a room and invite friends
+5. Inside the room, create objectives to track and map your activities to them
+   - this approach provides the most flexible way for users with different personal tracking
+     preferences can compare their progress smoothly
+6. In **Participants** tab: charts similar to the one in the dashboard
+   (but with the room's objectives) will be displayed for each room member
+7. In **Leaderboard** tab: a leaderboard for each of the room's objectives is displayed
+8. **Killer-feature:** you can see when other room members are tracking their activities
+   and view their progress in real-time!
 
 ## Local startup instructions
 
@@ -95,26 +112,6 @@ Configure these repository variables under **Settings → Secrets and variables 
 Each successful `main` build publishes `grindex-frontend-<commit SHA>` in the workflow run's
 **Artifacts** section. The artifact contains the Vite `dist` files for an Nginx document root.
 Configure Nginx with an SPA fallback such as `try_files $uri $uri/ /index.html`.
-
-
-## Usage
-
-1. Register a new account or login to an existing one
-2. In the dashboard, create one or multiple activities
-   - activities have a _resolution_ parameter: it indicates the period of time for which
-     the activity time is summarized in charts (day, week, month)
-3. Add time logs to the activities or start tracking one of them - a chart will appear
-   in the dashboard
-4. Switch to the **Rooms** page to create a room and invite friends
-5. Inside the room, create objectives to track and map your activities to them
-   - this approach provides the most flexible way for users with different personal tracking
-     preferences can compare their progress smoothly
-6. In **Participants** tab: charts similar to the one in the dashboard
-   (but with the room's objectives) will be displayed for each room member
-7. In **Leaderboard** tab: a leaderboard for each of the room's objectives is displayed
-8. **Killer-feature:** you can see when other room members are tracking their activities
-   and view their progress in real-time!
-
 
 ## Project structure
 
